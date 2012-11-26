@@ -1,0 +1,39 @@
+/*
+ * Vladimir Tsoy & Jordan Harmel
+ * Nov. 11, 2012
+ *
+ * CS 470 : Project 3
+ */
+ 
+struct Node {
+char *name;
+struct Node *parent;
+struct Node *left;
+struct Node *right;
+struct Node *sibling;
+struct Node *order;
+int post;
+};
+
+#define OPENP 1
+#define CLOSEP 2
+#define EOL -1
+#define NAME 3
+
+void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, struct Node **leftMost);
+
+int numNodes;
+struct Node ** nodesArray;
+
+void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, struct Node ** leftMost) {
+    int i;
+    struct Node *temp;
+    numNodes = 0;
+    initTokens(t);
+    nodesArray = (struct Node **) malloc(sizeof(struct Node*) *strlen(t)/2);
+    numNodes = 0;
+    *root = build(NULL, &temp);
+    *leftMost = temp;
+    *count = numNodes;
+    *nodes = nodesArray;
+}
