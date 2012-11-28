@@ -4,6 +4,7 @@
  *
  * CS 470 : Project 3
  */
+#include "tree.h"
 
 struct Node * build(struct Node *p, struct Node **temp) {
     int token;

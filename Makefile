@@ -14,7 +14,7 @@ all: preorder tree
 preorder: tree preorder.c
 	$(CC) -o preorder tree.o $(CFLAGS) $(LDFLAGS) preorder.c
 
-tree: tree.c
+tree: tree.c tree.h
 	$(CC) -c -o tree.o $(CFLAGS) tree.c
 
 clean:
