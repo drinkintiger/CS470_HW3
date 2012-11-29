@@ -21,22 +21,22 @@ struct Node * build(struct Node *p, struct Node **temp) {
             nodesArray[numNodes] = n;
             numNodes++;
             n->parent = p;
-            n->post = 1;
+            //n->pre = 1; dont't number utill the tree is built
             n->sibling = NULL;
             n->name = name;
-            n->left = build(n, &temp1);
+            n->child = build(n, &temp1);
             
-            if (n->left != NULL) {
-                n->right = build(n, &temp2);
-                n->left->sibling = n->right;
+            if (n->child != NULL) {
+                n->sibling = build(n, &temp2);
+                n->child->sibling = n->sibling;
             }
             
-            if (n->left != NULL && n->right != NULL) {
+           /*if (n->child != NULL && n->sibling != NULL) {
                 token = getToken(&name);
                 n->left->order = temp2;
-            }
+            }*/
             
-            if (n->left == NULL && n->right == NULL) *temp = n;
+            if (n->child == NULL && n->sibling == NULL) *temp = n;
             else *temp = temp1;
         }
     }
