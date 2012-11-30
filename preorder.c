@@ -39,6 +39,7 @@ Node *buildTree (Node * parent, char * node, char * sibling) {
     char * temp;
     char * first;
     char * rest;
+    Node * temp1 = malloc(sizeof(Node));
     
     length = strlen(node);
     
@@ -49,21 +50,30 @@ Node *buildTree (Node * parent, char * node, char * sibling) {
                 count += 1;
             }
             else if (count == 1) {
-                parent -> name = substring(&node[start], i - 1);
-                temp = substring(&node[i], length - i + 1);
-                split(temp, &first, &rest);
-                printf ("The remainder is : %s\n", temp);
+                if (parent->name == NULL) {
+                    parent -> name = substring(&node[start+1], i - 1);
+                    next = i;
+                }
                 count += 1;
             }
         }
         else if (node[i] == ')') {
             count -= 1;
             if (count == 0) {
+                temp = substring(&node[next], length - (next + 1));
                 end = i;
                 break;
             }
         }
     }
+    
+    printf("%s\n", temp);
+    split(temp, &first, &rest);
+    buildTree(temp1, temp, NULL);
+    printf ("The parent is : %s\n", parent -> name);
+    printf ("The child is : %s\n", first);
+    printf ("The remainder is : %s\n", rest);
+
     return parent;
 }
 char *substring(char * input, int length) {
@@ -110,6 +120,6 @@ void split(char * in, char ** first, char ** rest) {
         *rest = NULL;
     }
     else {
-        *rest = substring(&in[end + 1], length - (end +1));
+        *rest = substring(&in[end + 1], length - (end + 1));
     }
 }
