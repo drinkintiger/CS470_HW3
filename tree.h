@@ -31,6 +31,7 @@ struct Node ** nodesArray;
 struct Node * build(struct Node *p, struct Node **temp);
 
 void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, struct Node ** child) {
+    int i;
     struct Node *temp;
     numNodes = 0;
     initTokens(t);
