@@ -12,11 +12,10 @@
 typedef struct Node {
 char *name;
 struct Node *parent;
-struct Node *left;
-struct Node *right;
+struct Node *child;
 struct Node *sibling;
-struct Node *order;
-int post;
+struct Node *next;
+int pre;
 }Node;
 
 char *substring(char * input, int length);
