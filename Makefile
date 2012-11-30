@@ -9,13 +9,10 @@ CC=gcc
 CFLAGS=-g -Wall -std=gnu99
 LDFLAGS=-lpthread
 
-all: preorder tree
+all: preorder
 
-preorder: tree preorder.c
-	$(CC) -o preorder tree.o $(CFLAGS) $(LDFLAGS) preorder.c
-
-tree: tree.c tree.h
-	$(CC) -c -o tree.o $(CFLAGS) tree.c
+preorder: preorder.c
+	$(CC) -o preorder $(CFLAGS) $(LDFLAGS) preorder.c
 
 clean:
 	$(RM) preorder *.o
