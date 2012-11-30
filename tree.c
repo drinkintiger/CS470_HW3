@@ -7,12 +7,15 @@
 #include "tree.h"
 
 struct Node * build(struct Node *p, struct Node **temp) {
-    int token;
-    struct Node *n;
-    struct Node *temp2;
-    struct Node *temp1;
-    struct Node *last;
-    char *name;
+int token;
+struct Node *n;
+struct Node *temp2;
+struct Node *temp1;
+struct Node *last;
+char *name;
+
+token = getToken(&name);
+if (token == OPENP) {
     token = getToken(&name);
     if (token == OPENP) {
         token = getToken(&name);
