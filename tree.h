@@ -1,22 +1,18 @@
 /*
- * Vladimir Tsoy & Jordan Harmel
- * Nov. 11, 2012
- *
- * CS 470 : Project 3
- */
-
-#include <pthread.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-
+* Vladimir Tsoy & Jordan Harmel
+* Nov. 11, 2012
+*
+* CS 470 : Project 3
+*/
+ 
 struct Node {
 char *name;
 struct Node *parent;
-struct Node *child;
+struct Node *left;
+struct Node *right;
 struct Node *sibling;
-//struct Node *order;
-int pre;
+struct Node *order;
+int post;
 };
 
 #define OPENP 1
@@ -28,9 +24,8 @@ void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, s
 
 int numNodes;
 struct Node ** nodesArray;
-struct Node * build(struct Node *p, struct Node **temp);
 
-void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, struct Node ** child) {
+void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, struct Node ** leftMost) {
     int i;
     struct Node *temp;
     numNodes = 0;
@@ -38,7 +33,7 @@ void BuildTree(char *t, struct Node **root, struct Node *** nodes, int *count, s
     nodesArray = (struct Node **) malloc(sizeof(struct Node*) *strlen(t)/2);
     numNodes = 0;
     *root = build(NULL, &temp);
-    *child = temp;
+    *leftMost = temp;
     *count = numNodes;
     *nodes = nodesArray;
 }
