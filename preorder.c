@@ -42,16 +42,19 @@ Node *buildTree (Node * parent, char * node, char * sibling) {
     Node * temp1 = malloc(sizeof(Node));
     
     length = strlen(node);
-    
+    printf("ONE\n");
     for (int i = 0; i < length; ++i) {
         if (node[i] == '(') {
             if (start < 0) {
                 start = i;
                 count += 1;
+                next = i;
             }
             else if (count == 1) {
                 if (parent->name == NULL) {
+                    printf("ONE A\n");
                     parent -> name = substring(&node[start+1], i - 1);
+                    printf("ONE B\n");
                     next = i;
                 }
                 count += 1;
@@ -60,16 +63,25 @@ Node *buildTree (Node * parent, char * node, char * sibling) {
         else if (node[i] == ')') {
             count -= 1;
             if (count == 0) {
-                temp = substring(&node[next], length - (next + 1));
+                printf("ONE C\n");
+                printf("Passed len: %d\n", length - (next + 1));
+                temp = substring(&node[start+1], length - 2);
+                printf("Passed len: %d\n", length - (next + 1));
+                printf("ONE D\n");
                 end = i;
                 break;
             }
         }
     }
-    
+    printf("TWO\n");
     printf("%s\n", temp);
     split(temp, &first, &rest);
-    buildTree(temp1, temp, NULL);
+    //printf("%s\n", temp);
+    printf ("The parent is : %s\n", parent -> name);
+    printf ("The child is : %s\n", first);
+    printf ("The remainder is : %s\n", rest);
+    if(first==NULL && rest==NULL) return parent;
+    buildTree(parent, first, rest);
     printf ("The parent is : %s\n", parent -> name);
     printf ("The child is : %s\n", first);
     printf ("The remainder is : %s\n", rest);
