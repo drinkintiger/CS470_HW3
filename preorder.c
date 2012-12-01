@@ -88,6 +88,13 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     printf ("My parent is : %s\n", parent -> parent -> name);
     printf ("The child is : %s\n", child->name);
     printf ("The remainder is : %s\n", rest);
+    //return parent;
+    
+    split(rest, &first, &rest);
+    parent->sibling = buildNode(parent, first, rest);
+    printf ("My node is : %s\n", parent -> name);
+    printf ("My parent is : %s\n", parent -> parent -> name);
+    printf ("The remainder is : %s\n", rest);
     return parent;
 }
 char *substring(char * input, int length) {
