@@ -36,7 +36,7 @@ int main(int argc, char * argv[]) {
 Node *buildNode (Node * parent, char * node, char * sibling) {
     int start = -1, end, length, next, count = 0;
     Node * child;
-    Node * sibling;
+    Node * sib;
     char * temp;
     char * first;
     char * rest;
