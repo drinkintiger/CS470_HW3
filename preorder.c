@@ -29,14 +29,15 @@ int main(int argc, char * argv[]) {
     Node *parent = malloc(sizeof(Node));
     
     temp = buildNode(parent, "(A(B)(C(E)(F))(D(G)))", NULL);
+    printf("%s\n", temp->name);
     //split ("(A)(B)(C)", &first, &rest);
     //printf ("First : %s Rest: %s\n", first, rest);
 }
 
 Node *buildNode (Node * parent, char * node, char * sibling) {
     int start = -1, end, length, next, count = 0;
-    Node * child;
-    Node * sibling;
+    Node * child = malloc(sizeof(Node));
+    Node * sib = malloc(sizeof(Node));
     char * temp;
     char * first;
     char * rest;
@@ -52,6 +53,7 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
             else if (count == 1) {
                 if (parent->name == NULL) {
                     parent -> name = substring(&node[start+1], i - 1);
+                    parent -> parent = malloc(sizeof(Node));
                     next = i;
                 }
                 count += 1;
@@ -68,15 +70,24 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     }
 
     split(temp, &first, &rest);
-    
-    printf ("The parent is : %s\n", parent -> name);
-    printf ("The child is : %s\n", first);
-    printf ("The remainder is : %s\n", rest);
+    if (first != NULL) {
+        child->name = substring(&first[1],1);
+    }
+    child->parent = parent;
+    parent->child = child;
     
     if (first == NULL && rest == NULL) {
+        printf ("My node is : %s\n", parent -> name);
+        printf ("My parent is : %s\n", parent -> parent -> name);
+        printf ("The child is : %s\n", child->name);
+        printf ("The remainder is : %s\n", rest);
         return parent;
     }
-    parent->child = buildNode(parent, first, rest);
+    parent->child = buildNode(child, first, rest);
+    printf ("My node is : %s\n", parent -> name);
+    printf ("My parent is : %s\n", parent -> parent -> name);
+    printf ("The child is : %s\n", child->name);
+    printf ("The remainder is : %s\n", rest);
     return parent;
 }
 char *substring(char * input, int length) {
