@@ -31,7 +31,7 @@ int main(int argc, char * argv[]) {
     Node *temp;
     pthread_t *node_threads = NULL;
 
-    temp = buildNode(NULL, "(A(B(C(D))(E(F)(G)))(H(I)(J)))", NULL);
+    temp = buildNode(NULL, "(A(B)(C(E)(F))(D(G)))", NULL);
     
     pthread_barrier_init(&barrier, NULL, node_arr_length - 1);
     node_threads = malloc(sizeof(pthread_t) * node_arr_length);
@@ -109,6 +109,7 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     Node * current = malloc(sizeof(Node));
     current->child = NULL;
     current->sibling = NULL;
+    current->parent = NULL;
     current->pre = 1;
     char * temp;
     char * first;
@@ -121,6 +122,7 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     currentpos += 1;
     node_arr_length += 1;
     
+    /* Find the name of the node */
     for (int i = 0; i < length; ++i) {
         if (node[i] == '(') {
             start = i;
@@ -139,9 +141,10 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
             break;
         }
     }
-    
+    /* End */
     current->name = substring(&node[start + 1], end - 1);
     
+    /* If i have siblings */
     if (sibling != NULL) {
         split (sibling, &first, &rest);
         current->sibling = buildNode(parent, first, rest);
@@ -162,9 +165,12 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
         current->child = buildNode(current, first, rest);
     }
     
+    /* If i'm child, set my parent */
+    if (parent != NULL) current->parent = parent;
+    
     printf ("My node is : %s\n", current -> name);
     if (current-> parent != NULL) printf ("My parent is : %s\n", current -> parent -> name);
-    if (current-> child != NULL) printf ("The child is : %s\n", current -> child -> name);
+    if (current-> child != NULL) printf ("My child is : %s\n", current -> child -> name);
     if (current->sibling != NULL) printf ("My sibling is : %s\n", current->sibling->name);
     printf("\n");
     return current;
