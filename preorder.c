@@ -30,8 +30,16 @@ pthread_barrier_t barrier;
 int main(int argc, char * argv[]) {
     Node *temp;
     pthread_t *node_threads = NULL;
+    
+    FILE *file;
+    char line[64];
+    file = fopen( argv[1], "rt" );
+    
+    fgets (line, 64, file);
+    sscanf( line, "%s", &line );
+    
 
-    temp = buildNode(NULL, "(A(B)(C(E)(F))(D(G)))", NULL);
+    temp = buildNode(NULL, line, NULL);
     
     pthread_barrier_init(&barrier, NULL, node_arr_length - 1);
     node_threads = malloc(sizeof(pthread_t) * node_arr_length);
