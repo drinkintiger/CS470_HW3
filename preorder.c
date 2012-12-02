@@ -73,27 +73,33 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     if (first != NULL) {
         child->name = substring(&first[1],1);
     }
+    if(rest != NULL) {
+        sib ->name = substring(&rest[1],1);
+    }
     child->parent = parent;
     parent->child = child;
+    //parent-> sibling = sib;
+    sib -> parent = parent;
     
     if (first == NULL && rest == NULL) {
-        printf ("My node is : %s\n", parent -> name);
+        printf ("My 1 node is : %s\n", parent -> name);
         printf ("My parent is : %s\n", parent -> parent -> name);
         printf ("The child is : %s\n", child->name);
         printf ("The remainder is : %s\n", rest);
         return parent;
     }
     parent->child = buildNode(child, first, rest);
-    printf ("My node is : %s\n", parent -> name);
+    printf ("My 2 node is : %s\n", parent -> name);
     printf ("My parent is : %s\n", parent -> parent -> name);
     printf ("The child is : %s\n", child->name);
     printf ("The remainder is : %s\n", rest);
     //return parent;
     
     split(rest, &first, &rest);
-    parent->sibling = buildNode(parent, first, rest);
-    printf ("My node is : %s\n", parent -> name);
-    printf ("My parent is : %s\n", parent -> parent -> name);
+    printf("AFTERSPLIT %s    %s\n",first,rest);
+    parent->sibling = buildNode(sib, first, rest);
+    printf ("My 3 node is : %s\n", parent -> name);
+    printf ("My sib is : %s\n", child -> name);
     printf ("The remainder is : %s\n", rest);
     return parent;
 }
