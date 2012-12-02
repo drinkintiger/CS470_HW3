@@ -1,9 +1,9 @@
 /*
- * Vladimir Tsoy & Jordan Harmel
- * Nov. 11, 2012
- *
- * CS 470 : Project 3
- */
+* Vladimir Tsoy & Jordan Harmel
+* Nov. 11, 2012
+*
+* CS 470 : Project 3
+*/
 #include <pthread.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -161,19 +161,6 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
         split (temp, &first, &rest);
         current->child = buildNode(current, first, rest);
     }
-    split(temp, &first, &rest);
-    if (first != NULL) {
-        child->name = substring(&first[1],1);
-    }
-    if(rest != NULL) {
-        sib ->name = substring(&rest[1],1);
-    }
-    child->parent = parent;
-    parent->child = child;
-    //parent-> sibling = sib;
-    //sib -> parent = parent;
-    
-
     
     printf ("My node is : %s\n", current -> name);
     if (current-> parent != NULL) printf ("My parent is : %s\n", current -> parent -> name);
