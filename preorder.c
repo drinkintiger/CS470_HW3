@@ -21,33 +21,42 @@ int pre;
 char *substring(char * input, int length);
 void split(char * in, char ** first, char ** rest);
 Node *buildNode (Node * parent, char * node, char * sibling);
-Node ** nodearr = malloc(sizeof(Node *));
+Node ** nodearr;
 int currentpos = 0, node_arr_length = 1;
 void * find_next (void *param);
 void * preorder_num (void *param);
 pthread_barrier_t barrier;
 
 int main(int argc, char * argv[]) {
-    char * first;
-    char * rest;
-    pthread_t *node_threads = NULL;
     Node *temp;
-    
+    pthread_t *node_threads = NULL;
+
     temp = buildNode(NULL, "(A(B(C(D))(E(F)(G)))(H(I)(J)))", NULL);
     
-    pthread_barrier_init(&barrier, NULL, node_arr_length);
+    pthread_barrier_init(&barrier, NULL, node_arr_length - 1);
     node_threads = malloc(sizeof(pthread_t) * node_arr_length);
-    for (int i = 0; i < node_arr_length; i++) {
+
+    for (int i = 0; i < node_arr_length - 1; i++) {
         pthread_create(&(node_threads[i]), NULL, find_next, (void*) nodearr[i]);
     }
 
-    for(i = 0; i < node_arr_length; ++i ) {
+    for(int i = 0; i < node_arr_length; ++i ) {
         pthread_join(node_threads[i], NULL);
     }
     
-    for (int i = 0; i < node_arr_length; i++) {
+    for (int i = 0; i < node_arr_length - 1; i++) {
         pthread_create(&(node_threads[i]), NULL, preorder_num, (void*) nodearr[i]);
     }
+    
+    for(int i = 0; i < node_arr_length; ++i ) {
+        pthread_join(node_threads[i], NULL);
+    }
+    
+    for (int i = 0; i < node_arr_length - 1; i++) {
+        printf("My name is: %s\n", nodearr[i]->name);
+        printf("My preorder number is: %d\n", nodearr[i]->pre);
+    }
+    return 0;
 }
 
 void * find_next (void * param) {
@@ -71,14 +80,17 @@ void * find_next (void * param) {
             else temp = temp->parent;
         }
     }
+    
+    return NULL;
 }
 
 void * preorder_num (void *param) {
     Node *temp = (Node *) param;
-    for (int j = 1; j <= node_arr_length; j = 2*j) {
+    Node *n;
+    int d;
         if (temp->next != NULL ){
             n = temp->next->next;
-            d = temp->next + temp->next->pre;
+            d = temp->pre + temp->next->pre;
         }
         pthread_barrier_wait(&barrier);
         if (temp->next != NULL) {
@@ -86,8 +98,10 @@ void * preorder_num (void *param) {
             temp->next = n;
         }
         pthread_barrier_wait(&barrier);
-    }
-    temp->next = node_arr_length - temp->pre;
+
+    temp->pre = node_arr_length - temp->pre;
+    
+    return NULL;
 }
 
 Node *buildNode (Node * parent, char * node, char * sibling) {
@@ -95,6 +109,7 @@ Node *buildNode (Node * parent, char * node, char * sibling) {
     Node * current = malloc(sizeof(Node));
     current->child = NULL;
     current->sibling = NULL;
+    current->pre = 1;
     char * temp;
     char * first;
     char * rest;
